@@ -1,0 +1,36 @@
+services:
+  publisher:
+    build:
+      context: build/publisher
+    restart: unless-stopped
+    volumes:
+      - ./publisher:/home/node/app
+    environment:
+      - AMQP_DSN=amqp://demo:demo@rabbitmq:5672/
+    deploy:
+      replicas: 1
+
+  worker:
+    build:
+      context: build/worker
+    restart: unless-stopped
+    volumes:
+      - ./worker:/home/node/app
+    environment:
+      - AMQP_DSN=amqp://demo:demo@rabbitmq:5672/
+    deploy:
+      replicas: 5
+
+  rabbitmq:
+    image: 'rabbitmq:4-management'
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=demo
+      - RABBITMQ_DEFAULT_PASS=demo
+
+volumes:
+  rabbitmq-data:
