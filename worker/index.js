@@ -41,17 +41,17 @@ amqp.connect(process.env.AMQP_DSN, function (error0, connection) {
         channel.ack(msg);
       }, ackDelay);
     });
-
-    process.on('SIGINT', function () {
-      console.log('Closing connection...');
-
-      connection.close();
-    });
   });
 
   connection.on('close', function () {
     console.log('Stopping worker...');
 
     process.exit(0);
+  });
+
+  process.on('SIGINT', function () {
+    console.log('Closing connection...');
+
+    connection.close();
   });
 });
