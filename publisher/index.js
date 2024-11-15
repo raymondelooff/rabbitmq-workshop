@@ -21,7 +21,7 @@ amqp.connect(process.env.AMQP_DSN, function (error0, connection) {
     let i = 0;
 
     const interval = setInterval(function() {
-      const msg = `Message ${i}`;
+      const msg = `Hello World! ${i}`;
 
       channel.publish(exchangeName, routingKey, Buffer.from(msg));
 
